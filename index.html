@@ -2,306 +2,254 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>Together Widget</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#111318">
+<title>Together Live Wallpaper</title>
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    background: #000;
-}
-
-/* Main screen */
-.screen {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-}
-
-/* Background photo */
-.background {
-    position: absolute;
-    inset: 0;
-
-    background-image:
-        linear-gradient(
-            rgba(0,0,0,0.15),
-            rgba(0,0,0,0.25)
-        ),
-        url("photo.jpg");
-
-    background-size: cover;
-    background-position: center;
-}
-
-/* Top time */
-.time {
-    position: absolute;
-    top: 55px;
-    left: 0;
-    width: 100%;
-
-    text-align: center;
-
-    color: white;
-    font-size: 64px;
-    font-weight: 500;
-
-    text-shadow:
-        0 2px 8px rgba(0,0,0,0.6);
-}
-
-/* Together text */
-.together {
-    position: absolute;
-    top: 145px;
-    left: 0;
-    width: 100%;
-
-    text-align: center;
-
-    color: white;
-    font-size: 16px;
-
-    text-shadow:
-        0 2px 5px rgba(0,0,0,0.7);
-}
-
-.together span {
-    font-size: 18px;
-}
-
-/* Counter */
-.counter {
-    position: absolute;
-    top: 175px;
-    left: 0;
-    width: 100%;
-
-    text-align: center;
-
-    color: white;
-    font-size: 20px;
-    font-weight: 500;
-
-    text-shadow:
-        0 2px 6px rgba(0,0,0,0.8);
-}
-
-/* Bottom card */
-.widget {
-    position: absolute;
-
-    left: 20px;
-    right: 20px;
-    bottom: 45px;
-
-    padding: 18px;
-
-    border-radius: 22px;
-
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-
-    border: 1px solid rgba(255,255,255,0.25);
-
-    color: white;
-
-    text-align: center;
-}
-
-.widget-title {
-    font-size: 14px;
-    opacity: 0.9;
-    margin-bottom: 8px;
-}
-
-.days {
-    font-size: 27px;
-    font-weight: bold;
-}
-
-.date {
-    margin-top: 8px;
-    font-size: 13px;
-    opacity: 0.85;
-}
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:100%;height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#111318;color:#fff}
+  body{overflow:hidden}
+  .app{height:100dvh;display:flex;flex-direction:column}
+  .preview-wrap{position:relative;flex:1;min-height:0;background:#222;display:flex;justify-content:center;overflow:hidden}
+  .wallpaper{
+    position:relative;width:min(100%,430px);height:100%;overflow:hidden;
+    background:linear-gradient(180deg,#587590 0%,#26364a 42%,#ef8b3d 100%);
+    background-size:cover;background-position:center;
+  }
+  .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.20),rgba(0,0,0,.05) 35%,rgba(0,0,0,.20) 100%);pointer-events:none}
+  .top{position:absolute;top:16px;left:0;right:0;text-align:center;text-shadow:0 2px 10px #0008}
+  .lock{font-size:24px;margin-bottom:6px}
+  .unlock{font-size:15px;letter-spacing:.2px}
+  .date{font-size:18px;margin-top:9px}
+  .clock{font-size:76px;line-height:.95;font-weight:300;letter-spacing:-3px;margin-top:25px;text-shadow:0 3px 16px #0008}
+  .widgets{position:absolute;left:12px;right:12px;top:235px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .card{
+    min-height:112px;border:1px solid #ffffff35;background:#ffffff20;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-radius:22px;padding:13px 10px;text-align:center;box-shadow:0 8px 30px #0002;
+  }
+  .label{font-size:14px;letter-spacing:.3px;white-space:nowrap}
+  .heart{color:#ff3b69;font-size:20px;vertical-align:-1px;margin-right:5px}
+  .calendar-value{font-size:28px;font-weight:700;margin-top:9px;letter-spacing:-.6px}
+  .since{font-size:11px;opacity:.9;margin-top:6px}
+  .total-value{font-size:31px;font-weight:750;line-height:1;margin-top:9px}
+  .total-units{font-size:10px;font-weight:650;letter-spacing:.5px;margin-top:7px;opacity:.95;line-height:1.45}
+  .quote{
+    position:absolute;left:25px;right:25px;top:365px;
+    border:1px solid #ffffff30;background:#ffffff18;backdrop-filter:blur(10px);
+    border-radius:30px;text-align:center;padding:9px 12px;font-size:12px;letter-spacing:3px;
+  }
+  .photo{
+    position:absolute;left:0;right:0;top:430px;bottom:0;
+    background-size:cover;background-position:center;opacity:.98;
+    mask-image:linear-gradient(to bottom,transparent 0%,#000 8%);
+    -webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 8%);
+  }
+  .bottom-content{position:absolute;left:12px;right:12px;bottom:62px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .bottom-card{border-radius:20px;padding:11px;background:#15171dcc;border:1px solid #ffffff22;backdrop-filter:blur(9px);text-align:center}
+  .bottom-card .small{font-size:12px;opacity:.9}.bottom-card .big{font-size:20px;font-weight:750;margin:3px 0}
+  .footer{position:absolute;bottom:13px;left:0;right:0;text-align:center;font-size:13px;text-shadow:0 2px 8px #000}
+  .edit-panel{
+    position:absolute;right:10px;bottom:10px;z-index:20;width:min(360px,calc(100% - 20px));
+    max-height:72dvh;overflow:auto;background:#16181dcc;border:1px solid #ffffff25;
+    backdrop-filter:blur(18px);border-radius:22px;padding:14px;box-shadow:0 15px 45px #0008;
+    transform:translateY(calc(100% + 20px));transition:.25s ease;
+  }
+  .edit-panel.open{transform:translateY(0)}
+  .edit-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .edit-head strong{font-size:16px}.close{border:0;background:#ffffff18;color:#fff;border-radius:10px;padding:7px 10px}
+  .field{margin:9px 0}.field label{display:block;font-size:11px;opacity:.75;margin-bottom:5px}
+  input,button,select{font:inherit}
+  input[type="text"],input[type="datetime-local"],input[type="color"]{
+    width:100%;border:1px solid #ffffff22;background:#ffffff10;color:#fff;border-radius:10px;padding:9px
+  }
+  input[type="file"]{width:100%;font-size:11px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .btn{border:0;border-radius:12px;padding:10px;background:#ffffff18;color:#fff}
+  .btn.primary{background:#ff3b69}
+  .open-editor{position:absolute;right:14px;bottom:14px;z-index:10;border:0;border-radius:50%;width:48px;height:48px;background:#16171dcc;color:#fff;font-size:21px;box-shadow:0 5px 20px #0006}
+  @media(max-height:700px){
+    .clock{font-size:62px;margin-top:15px}.widgets{top:200px}.quote{top:330px}.photo{top:390px}.bottom-content{bottom:52px}
+  }
 </style>
 </head>
-
 <body>
+<div class="app">
+  <div class="preview-wrap">
+    <div class="wallpaper" id="wallpaper">
+      <div class="shade"></div>
+      <div class="top">
+        <div class="lock">🔒</div>
+        <div class="unlock" id="unlockText">Look down to unlock</div>
+        <div class="date" id="dateText"></div>
+        <div class="clock" id="clock">12:31:45</div>
+      </div>
 
-<div class="screen">
-
-    <div class="background"></div>
-
-    <!-- Current time -->
-    <div class="time" id="time">
-        12:31
-    </div>
-
-    <!-- Together -->
-    <div class="together">
-        together for ❤️
-    </div>
-
-    <!-- Live counter -->
-    <div class="counter" id="counter">
-        0y, 0m, 0d
-    </div>
-
-    <!-- Bottom widget -->
-    <div class="widget">
-
-        <div class="widget-title">
-            ❤️ OUR JOURNEY ❤️
+      <div class="widgets">
+        <div class="card">
+          <div class="label"><span class="heart">♥</span>together for</div>
+          <div class="calendar-value" id="calendarValue">2y, 8m, 4d</div>
+          <div class="since" id="sinceText">Since 15 Jan 2024</div>
         </div>
-
-        <div class="days" id="days">
-            0 Days
+        <div class="card">
+          <div class="label"><span class="heart">♥</span>together for</div>
+          <div class="total-value" id="totalDays">987</div>
+          <div class="total-units" id="totalUnits">DAYS&nbsp;&nbsp;02 HOURS&nbsp;&nbsp;15 MIN&nbsp;&nbsp;30 SEC</div>
         </div>
+      </div>
 
-        <div class="date" id="date">
-            Started: --
+      <div class="quote" id="quote">♥ &nbsp; Same People &nbsp; Same Dreams &nbsp; Always Us</div>
+      <div class="photo" id="photo"></div>
+
+      <div class="bottom-content">
+        <div class="bottom-card">
+          <div class="small">Next Anniversary</div>
+          <div class="big" id="anniversaryDays">117 Days</div>
+          <div class="small" id="anniversaryDate">14 Jan 2027</div>
         </div>
+        <div class="bottom-card">
+          <div class="small">♥</div>
+          <div class="big" id="milestone">Together</div>
+          <div class="small">and counting...</div>
+        </div>
+      </div>
+      <div class="footer">Better Together ♥</div>
 
+      <button class="open-editor" id="openEditor" aria-label="Edit">✎</button>
+
+      <div class="edit-panel" id="editor">
+        <div class="edit-head"><strong>Wallpaper Editor</strong><button class="close" id="closeEditor">✕</button></div>
+
+        <div class="field"><label>Start date & time</label><input id="startDate" type="datetime-local"></div>
+        <div class="row">
+          <div class="field"><label>Unlock text</label><input id="unlockInput" type="text" value="Look down to unlock"></div>
+          <div class="field"><label>Quote</label><input id="quoteInput" type="text" value="♥  Same People  Same Dreams  Always Us"></div>
+        </div>
+        <div class="field"><label>Your photo</label><input id="photoInput" type="file" accept="image/*"></div>
+        <div class="field"><label>Background image (optional)</label><input id="bgInput" type="file" accept="image/*"></div>
+        <div class="row">
+          <div class="field"><label>Background position</label><select id="position"><option>center</option><option>top</option><option>bottom</option></select></div>
+          <div class="field"><label>Accent color</label><input id="accent" type="color" value="#ff3b69"></div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="clearImages">Clear images</button>
+          <button class="btn primary" id="save">Save</button>
+        </div>
+      </div>
     </div>
-
+  </div>
 </div>
 
-
 <script>
+const $ = id => document.getElementById(id);
+const stateKey = "together_wallpaper_v1";
 
-/* =========================================
-   SET YOUR START DATE
-   ========================================= */
-
-const startDate = new Date("2025-09-21T00:00:00");
-
-
-/* =========================================
-   TIME
-   ========================================= */
-
-function updateTime() {
-
-    const now = new Date();
-
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-
-    hours = hours.toString().padStart(2, "0");
-    minutes = minutes.toString().padStart(2, "0");
-
-    document.getElementById("time").innerText =
-        hours + ":" + minutes;
+function pad(n){return String(n).padStart(2,"0");}
+function formatDate(d){
+  return d.toLocaleDateString("en-IN",{weekday:"short",day:"2-digit",month:"short",year:"numeric"});
 }
-
-
-/* =========================================
-   TOGETHER COUNTER
-   ========================================= */
-
-function updateCounter() {
-
-    const now = new Date();
-
-    let years =
-        now.getFullYear() -
-        startDate.getFullYear();
-
-    let months =
-        now.getMonth() -
-        startDate.getMonth();
-
-    let days =
-        now.getDate() -
-        startDate.getDate();
-
-
-    if (days < 0) {
-
-        months--;
-
-        const previousMonth =
-            new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                0
-            );
-
-        days += previousMonth.getDate();
-    }
-
-
-    if (months < 0) {
-
-        years--;
-        months += 12;
-    }
-
-
-    document.getElementById("counter").innerText =
-        years + "y, " +
-        months + "m, " +
-        days + "d";
-
-
-    /* Total days */
-
-    const difference =
-        now - startDate;
-
-    const totalDays =
-        Math.floor(
-            difference /
-            (1000 * 60 * 60 * 24)
-        );
-
-
-    document.getElementById("days").innerText =
-        totalDays + " Days";
-
-
-    /* Start date */
-
-    document.getElementById("date").innerText =
-        "Started: " +
-        startDate.toLocaleDateString(
-            "en-IN",
-            {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            }
-        );
+function calendarDiff(start, end){
+  let y=end.getFullYear()-start.getFullYear();
+  let m=end.getMonth()-start.getMonth();
+  let d=end.getDate()-start.getDate();
+  if(d<0){m--; const prev=new Date(end.getFullYear(),end.getMonth(),0); d+=prev.getDate();}
+  if(m<0){y--;m+=12;}
+  return {y,m,d};
 }
+function totalParts(start,end){
+  let seconds=Math.max(0,Math.floor((end-start)/1000));
+  const days=Math.floor(seconds/86400); seconds%=86400;
+  const hours=Math.floor(seconds/3600); seconds%=3600;
+  const mins=Math.floor(seconds/60); seconds%=60;
+  return {days,hours,mins,seconds};
+}
+function nextAnniversary(start, now){
+  let y=now.getFullYear();
+  let a=new Date(y,start.getMonth(),start.getDate());
+  if(a<=now) a=new Date(y+1,start.getMonth(),start.getDate());
+  return a;
+}
+function update(){
+  const now=new Date();
+  $("clock").textContent=`${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  $("dateText").textContent=formatDate(now);
 
+  let start=new Date($("startDate").value);
+  if(isNaN(start)) start=new Date(2024,0,15,12,31,0);
 
-/* =========================================
-   START
-   ========================================= */
+  const diff=calendarDiff(start,now);
+  $("calendarValue").textContent=`${diff.y}y, ${diff.m}m, ${diff.d}d`;
+  $("sinceText").textContent=`Since ${start.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})}`;
 
-updateTime();
-updateCounter();
+  const t=totalParts(start,now);
+  $("totalDays").textContent=t.days.toLocaleString("en-IN");
+  $("totalUnits").textContent=`DAYS  ${pad(t.hours)} HOURS  ${pad(t.mins)} MIN  ${pad(t.seconds)} SEC`;
 
-setInterval(updateTime, 1000);
-setInterval(updateCounter, 60000);
+  const ann=nextAnniversary(start,now);
+  const annDays=Math.ceil((ann-now)/86400000);
+  $("anniversaryDays").textContent=`${annDays} Days`;
+  $("anniversaryDate").textContent=ann.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+}
+setInterval(update,1000);
 
+function load(){
+  const saved=JSON.parse(localStorage.getItem(stateKey)||"{}");
+  const d=saved.start || "2024-01-15T12:31";
+  $("startDate").value=d;
+  if(saved.unlock) $("unlockInput").value=saved.unlock;
+  if(saved.quote) $("quoteInput").value=saved.quote;
+  if(saved.accent){document.documentElement.style.setProperty("--accent",saved.accent);$("accent").value=saved.accent;document.querySelectorAll(".heart").forEach(x=>x.style.color=saved.accent);}
+  if(saved.photo){$("photo").style.backgroundImage=`url(${saved.photo})`;}
+  if(saved.bg){$("wallpaper").style.backgroundImage=`url(${saved.bg})`;}
+  if(saved.position){$("photo").style.backgroundPosition=saved.position;$("wallpaper").style.backgroundPosition=saved.position;}
+  $("unlockText").textContent=$("unlockInput").value;
+  $("quote").textContent=$("quoteInput").value;
+  update();
+}
+$("save").onclick=()=>{
+  const data=JSON.parse(localStorage.getItem(stateKey)||"{}");
+  data.start=$("startDate").value;
+  data.unlock=$("unlockInput").value;
+  data.quote=$("quoteInput").value;
+  data.position=$("position").value;
+  data.accent=$("accent").value;
+  localStorage.setItem(stateKey,JSON.stringify(data));
+  document.querySelectorAll(".heart").forEach(x=>x.style.color=data.accent);
+  $("unlockText").textContent=data.unlock;
+  $("quote").textContent=data.quote;
+  $("photo").style.backgroundPosition=data.position;
+  $("wallpaper").style.backgroundPosition=data.position;
+  update();
+  $("editor").classList.remove("open");
+};
+$("photoInput").onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>{
+    const data=JSON.parse(localStorage.getItem(stateKey)||"{}");data.photo=r.result;
+    localStorage.setItem(stateKey,JSON.stringify(data));$("photo").style.backgroundImage=`url(${r.result})`;
+  };r.readAsDataURL(f);
+};
+$("bgInput").onchange=e=>{
+  const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>{
+    const data=JSON.parse(localStorage.getItem(stateKey)||"{}");data.bg=r.result;
+    localStorage.setItem(stateKey,JSON.stringify(data));$("wallpaper").style.backgroundImage=`url(${r.result})`;
+  };r.readAsDataURL(f);
+};
+$("clearImages").onclick=()=>{
+  const data=JSON.parse(localStorage.getItem(stateKey)||"{}");delete data.photo;delete data.bg;
+  localStorage.setItem(stateKey,JSON.stringify(data));
+  $("photo").style.backgroundImage="";$("wallpaper").style.backgroundImage="";
+};
+$("openEditor").onclick=()=>$("editor").classList.add("open");
+$("closeEditor").onclick=()=>$("editor").classList.remove("open");
+$("position").onchange=()=>{ $("photo").style.backgroundPosition=$("position").value; $("wallpaper").style.backgroundPosition=$("position").value; };
+$("unlockInput").oninput=()=>$("unlockText").textContent=$("unlockInput").value;
+$("quoteInput").oninput=()=>$("quote").textContent=$("quoteInput").value;
+$("accent").oninput=()=>document.querySelectorAll(".heart").forEach(x=>x.style.color=$("accent").value);
+
+load();
 </script>
-
 </body>
-      </html>
+</html>
