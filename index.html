@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Together Widget</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #000;
+}
+
+/* Main screen */
+.screen {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background photo */
+.background {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,0.15),
+            rgba(0,0,0,0.25)
+        ),
+        url("photo.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+/* Top time */
+.time {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+
+    text-align: center;
+
+    color: white;
+    font-size: 64px;
+    font-weight: 500;
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,0.6);
+}
+
+/* Together text */
+.together {
+    position: absolute;
+    top: 145px;
+    left: 0;
+    width: 100%;
+
+    text-align: center;
+
+    color: white;
+    font-size: 16px;
+
+    text-shadow:
+        0 2px 5px rgba(0,0,0,0.7);
+}
+
+.together span {
+    font-size: 18px;
+}
+
+/* Counter */
+.counter {
+    position: absolute;
+    top: 175px;
+    left: 0;
+    width: 100%;
+
+    text-align: center;
+
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+
+    text-shadow:
+        0 2px 6px rgba(0,0,0,0.8);
+}
+
+/* Bottom card */
+.widget {
+    position: absolute;
+
+    left: 20px;
+    right: 20px;
+    bottom: 45px;
+
+    padding: 18px;
+
+    border-radius: 22px;
+
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255,255,255,0.25);
+
+    color: white;
+
+    text-align: center;
+}
+
+.widget-title {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.days {
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.date {
+    margin-top: 8px;
+    font-size: 13px;
+    opacity: 0.85;
+}
+</style>
+</head>
+
+<body>
+
+<div class="screen">
+
+    <div class="background"></div>
+
+    <!-- Current time -->
+    <div class="time" id="time">
+        12:31
+    </div>
+
+    <!-- Together -->
+    <div class="together">
+        together for ❤️
+    </div>
+
+    <!-- Live counter -->
+    <div class="counter" id="counter">
+        0y, 0m, 0d
+    </div>
+
+    <!-- Bottom widget -->
+    <div class="widget">
+
+        <div class="widget-title">
+            ❤️ OUR JOURNEY ❤️
+        </div>
+
+        <div class="days" id="days">
+            0 Days
+        </div>
+
+        <div class="date" id="date">
+            Started: --
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SET YOUR START DATE
+   ========================================= */
+
+const startDate = new Date("2025-09-21T00:00:00");
+
+
+/* =========================================
+   TIME
+   ========================================= */
+
+function updateTime() {
+
+    const now = new Date();
+
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    hours = hours.toString().padStart(2, "0");
+    minutes = minutes.toString().padStart(2, "0");
+
+    document.getElementById("time").innerText =
+        hours + ":" + minutes;
+}
+
+
+/* =========================================
+   TOGETHER COUNTER
+   ========================================= */
+
+function updateCounter() {
+
+    const now = new Date();
+
+    let years =
+        now.getFullYear() -
+        startDate.getFullYear();
+
+    let months =
+        now.getMonth() -
+        startDate.getMonth();
+
+    let days =
+        now.getDate() -
+        startDate.getDate();
+
+
+    if (days < 0) {
+
+        months--;
+
+        const previousMonth =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                0
+            );
+
+        days += previousMonth.getDate();
+    }
+
+
+    if (months < 0) {
+
+        years--;
+        months += 12;
+    }
+
+
+    document.getElementById("counter").innerText =
+        years + "y, " +
+        months + "m, " +
+        days + "d";
+
+
+    /* Total days */
+
+    const difference =
+        now - startDate;
+
+    const totalDays =
+        Math.floor(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    document.getElementById("days").innerText =
+        totalDays + " Days";
+
+
+    /* Start date */
+
+    document.getElementById("date").innerText =
+        "Started: " +
+        startDate.toLocaleDateString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+}
+
+
+/* =========================================
+   START
+   ========================================= */
+
+updateTime();
+updateCounter();
+
+setInterval(updateTime, 1000);
+setInterval(updateCounter, 60000);
+
+</script>
+
+</body>
+      </html>
